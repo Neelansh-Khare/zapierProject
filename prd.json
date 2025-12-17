@@ -1,0 +1,192 @@
+{
+    "product_name": "MCP Universe Simulator",
+    "version": "1.0.0",
+    "summary": {
+      "description": "A scalable synthetic universe of mock Zapier-compatible apps for RL agents and AI workflows. Apps simulate realistic schemas, actions, rate limits, triggers, states, authentication flows, errors, and multi-step workflow behavior.",
+      "primary_goal": "Allow agents to interact with a vast ecosystem of realistic, low-cost, synthetic apps instead of using real APIs.",
+      "challenge_alignment": {
+        "realistic": true,
+        "affordable": true,
+        "useful": true
+      }
+    },
+    "core_objective": {
+      "statement": "Build the most comprehensive and realistic MCP mock environment, enabling RL agents and AI systems to practice operating on a diverse ecosystem of apps.",
+      "value_hypothesis": [
+        "Agents can generalize across app types thanks to consistent schemas.",
+        "Developers can test workflows safely at scale.",
+        "AI systems can explore thousands of synthetic automations without using real tokens or paid APIs."
+      ]
+    },
+    "components": {
+      "app_library": {
+        "description": "A high-scale collection of synthetic apps. Each app includes metadata, actions, schemas, rate limits, error modes, and state machines.",
+        "target_app_count": 200,
+        "categories": [
+          "email",
+          "storage",
+          "productivity",
+          "crm",
+          "finance",
+          "developer_tools",
+          "messaging",
+          "calendar",
+          "operations",
+          "file_processing"
+        ],
+        "app_structure": {
+          "metadata": { "name": "string", "category": "string", "description": "string" },
+          "actions": [
+            {
+              "name": "string",
+              "inputs_schema": "jsonschema",
+              "outputs_schema": "jsonschema",
+              "side_effects": "state changes",
+              "errors": ["rate_limit", "invalid_schema", "auth_error", "network"],
+              "latency_range_ms": [50, 400]
+            }
+          ],
+          "rate_limits": {
+            "requests_per_min": "number",
+            "burst_limit": "number"
+          }
+        }
+      },
+      "state_engine": {
+        "description": "Global state and per-app state simulation.",
+        "features": [
+          "persistent app state",
+          "synthetic data generator",
+          "CRUD operations",
+          "multi-app shared objects",
+          "event propagation"
+        ]
+      },
+      "trigger_system": {
+        "description": "Simulates Zapier-like triggers.",
+        "trigger_types": ["polling", "webhook", "scheduled"],
+        "trigger_frequency": "configurable"
+      },
+      "error_simulation": {
+        "types": [
+          "rate_limit",
+          "auth_expired",
+          "network_unreachable",
+          "schema_error",
+          "partial_failure",
+          "data_inconsistency"
+        ],
+        "configurable_noise_levels": true
+      },
+      "universe_config": {
+        "description": "Users can define universe size, app categories, chaos level, schema complexity.",
+        "config_fields": [
+          "num_apps",
+          "categories_enabled",
+          "rate_limit_profiles",
+          "error_profile",
+          "latency_profile",
+          "data_density",
+          "schema_complexity"
+        ]
+      }
+    },
+    "technical_design": {
+      "architecture": {
+        "modules": [
+          "universe/generator/",
+          "universe/app_registry.json",
+          "apps/<app_name>/",
+          "core/state/",
+          "core/errors/",
+          "core/triggers/",
+          "api/mcp_exposer/",
+          "tools/schema_generator/",
+          "tools/universe_scaler/"
+        ]
+      },
+      "language": "Python (backend) with optional Node tooling",
+      "dependencies": [
+        "pydantic",
+        "jsonschema",
+        "faker",
+        "fastapi",
+        "mcp-server-sdk",
+        "numpy"
+      ],
+      "scale_model": {
+        "max_apps": 2000,
+        "max_state_size_mb": 100,
+        "episodic_cleanup": true
+      }
+    },
+    "key_features": [
+      {
+        "name": "Synthetic App Generator",
+        "description": "Generate hundreds of apps from YAML templates or code patterns.",
+        "template_fields": [
+          "category",
+          "action_count",
+          "schema_complexity",
+          "rate_limits",
+          "default_state",
+          "error_distribution"
+        ]
+      },
+      {
+        "name": "Universe Randomizer",
+        "description": "Generate random but realistic universes that mimic Zapier's diversity."
+      },
+      {
+        "name": "MCP Action Compatibility",
+        "description": "Expose every synthetic app as a valid MCP tool endpoint."
+      },
+      {
+        "name": "Chaos Mode",
+        "description": "Inject errors, latency, failures for RL robustness."
+      },
+      {
+        "name": "Workflow Orchestrator",
+        "description": "Simulate multi-app workflows internally to validate agent behavior."
+      }
+    ],
+    "example_apps": [
+      "MailoMailer",
+      "TaskPad",
+      "SheetForge",
+      "SalesPulseCRM",
+      "Slackette Messaging",
+      "AutoBooker Calendar",
+      "DriveHive Storage"
+    ],
+    "example_actions": [
+      "send_email",
+      "append_row",
+      "create_message",
+      "fetch_contacts",
+      "upload_file",
+      "update_task",
+      "schedule_event"
+    ],
+    "success_metrics": {
+      "quantitative": [
+        "apps_generated_per_second",
+        "agent_task_completion_rate",
+        "synthetic_error_recovery",
+        "generalization_across_templates"
+      ],
+      "qualitative": [
+        "realism of mock behavior",
+        "ease of creating new apps",
+        "debugging clarity"
+      ]
+    },
+    "delivery_plan": {
+      "milestone_1": "Universe generator + 10 apps",
+      "milestone_2": "State engine + chaos injection",
+      "milestone_3": "MCP server wrapper",
+      "milestone_4": "200 apps output + documentation",
+      "milestone_5": "Demo video + README + sample agents"
+    }
+  }
+  

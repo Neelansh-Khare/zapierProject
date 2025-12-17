@@ -1,0 +1,22 @@
+# Core dependencies from PRD
+pydantic>=2.0.0
+jsonschema>=4.0.0
+faker>=20.0.0
+fastapi>=0.104.0
+numpy>=1.24.0
+
+# MCP Server SDK (check latest version)
+# Note: mcp-server-sdk may need to be installed separately or use mcp package
+# Adjust based on actual package name when available
+
+# Additional utilities
+uvicorn>=0.24.0  # For running FastAPI server
+pyyaml>=6.0  # For YAML template support
+python-dotenv>=1.0.0  # For environment configuration
+
+# Development dependencies
+pytest>=7.4.0
+pytest-asyncio>=0.21.0
+black>=23.0.0
+ruff>=0.1.0
+

@@ -1,0 +1,29 @@
+{
+  "num_apps": 10,
+  "categories_enabled": [
+    "email",
+    "storage",
+    "productivity",
+    "crm",
+    "messaging"
+  ],
+  "rate_limit_profiles": {
+    "default": {
+      "requests_per_min": 60,
+      "burst_limit": 10
+    },
+    "high_traffic": {
+      "requests_per_min": 300,
+      "burst_limit": 50
+    },
+    "low_traffic": {
+      "requests_per_min": 10,
+      "burst_limit": 2
+    }
+  },
+  "error_profile": "low",
+  "latency_profile": "normal",
+  "data_density": "medium",
+  "schema_complexity": "medium"
+}
+
