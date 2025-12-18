@@ -23,15 +23,22 @@ This project enables agents to interact with a vast ecosystem of realistic, low-
 │   ├── errors/        # Error simulation and chaos injection
 │   └── triggers/      # Trigger system (polling, webhook, scheduled)
 ├── universe/          # Universe generation and management
+│   ├── config.py      # Universe configuration (ErrorProfile, LatencyProfile, etc.)
 │   ├── generator/     # Universe generator logic
+│   │   ├── randomizer.py  # UniverseRandomizer for generating diverse universes
+│   │   └── registry_manager.py  # App registry management
 │   └── app_registry.json  # Registry of all apps
 ├── apps/              # Generated app definitions
 │   └── <app_name>/    # Individual app folders
 ├── api/               # API layer
 │   └── mcp_exposer/   # MCP server wrapper
-└── tools/             # Utility tools
-    ├── schema_generator/    # Schema generation utilities
-    └── universe_scaler/     # Universe scaling tools
+├── tools/             # Utility tools
+│   ├── schema_generator/    # Schema generation utilities
+│   └── universe_scaler/     # Universe scaling tools
+├── scripts/           # CLI scripts
+│   └── generate_universe.py  # Generate universe of apps
+└── examples/          # Example usage patterns
+    └── basic_usage.py  # Basic usage examples
 ```
 
 ## Installation
@@ -78,6 +85,74 @@ app = generator.generate_app(
     error_profile=ErrorProfile.LOW,
     latency_profile=LatencyProfile.NORMAL,
 )
+```
+
+### Generating a Universe
+
+You can generate a universe of apps using the CLI script:
+
+```bash
+# Generate 200 apps across all categories
+python -m scripts.generate_universe --num-apps 200
+
+# Generate 50 apps in specific categories
+python -m scripts.generate_universe --num-apps 50 --categories email storage productivity
+
+# Generate with custom chaos level
+python -m scripts.generate_universe --num-apps 100 --chaos-level 1.5
+```
+
+Or programmatically:
+
+```python
+from universe.config import UniverseConfig
+from universe.generator.randomizer import UniverseRandomizer
+from core.models import AppCategory
+
+# Create custom config
+config = UniverseConfig(
+    num_apps=100,
+    categories_enabled=[AppCategory.EMAIL, AppCategory.STORAGE],
+    chaos_level=1.5
+)
+
+# Generate universe
+randomizer = UniverseRandomizer(config)
+universe = randomizer.generate_universe()
+
+print(f"Generated {universe['total_apps']} apps")
+```
+
+### Using Universe Scaler
+
+Scale and manage your universe:
+
+```python
+from universe.config import UniverseConfig
+from tools.universe_scaler.scaler import UniverseScaler
+from core.models import AppCategory
+
+scaler = UniverseScaler()
+
+# Add more apps to the universe
+new_apps = scaler.add_apps_to_universe(
+    count=10,
+    categories=[AppCategory.EMAIL, AppCategory.CRM]
+)
+
+# Generate app registry JSON
+scaler.generate_app_registry_json("universe/app_registry.json")
+
+# Clean up state
+scaler.cleanup_state()
+```
+
+### Running Examples
+
+See example usage patterns:
+
+```bash
+python examples/basic_usage.py
 ```
 
 ## Milestones

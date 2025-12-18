@@ -13,6 +13,8 @@ numpy>=1.24.0
 uvicorn>=0.24.0  # For running FastAPI server
 pyyaml>=6.0  # For YAML template support
 python-dotenv>=1.0.0  # For environment configuration
+python-multipart>=0.0.6  # For FastAPI form data
+aiofiles>=23.2.1  # For async file operations
 
 # Development dependencies
 pytest>=7.4.0
