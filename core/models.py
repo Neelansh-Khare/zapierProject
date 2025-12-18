@@ -15,7 +15,8 @@ class ErrorType(str, Enum):
     SCHEMA_ERROR = "schema_error"
     PARTIAL_FAILURE = "partial_failure"
     DATA_INCONSISTENCY = "data_inconsistency"
-    INVALID_SCHEMA = "invalid_schema"
+    INVALID_INPUT = "invalid_input"
+    SERVER_ERROR = "server_error"
     AUTH_ERROR = "auth_error"
 
 
