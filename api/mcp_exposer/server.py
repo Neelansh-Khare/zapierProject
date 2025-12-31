@@ -122,20 +122,37 @@ class MCPExposer:
         @self.app.post("/tools/{tool_name}/call")
         async def call_tool(tool_name: str, arguments: Dict[str, Any]):
             """Call a tool (MCP-compatible)."""
-            try:
-                app_name_str, action_name = tool_name.rsplit("_", 1)
-                app_name = app_name_str.replace('_', ' ')
-            except ValueError:
-                raise HTTPException(
-                    status_code=400,
-                    detail="Invalid tool name format. Expected 'AppName_action_name'."
-                )
+            
+            # Find the app that matches the tool name prefix
+            apps = self.app_loader.get_all_apps()
+            target_app = None
+            action_name = None
+            
+            for app in apps:
+                app_prefix = app.metadata.name.replace(' ', '_')
+                if tool_name.startswith(app_prefix + "_"):
+                    # Found a potential match
+                    possible_action = tool_name[len(app_prefix)+1:]
+                    # Verify this action exists in the app
+                    if app.get_action(possible_action):
+                        target_app = app
+                        action_name = possible_action
+                        break
+            
+            if not target_app or not action_name:
+                # Fallback to old splitting logic just in case, or fail
+                try:
+                    app_name_str, action_part = tool_name.rsplit("_", 1)
+                    app_name_fallback = app_name_str.replace('_', ' ')
+                    target_app = self.app_loader.load_app(app_name_fallback)
+                    action_name = action_part
+                except ValueError:
+                    pass
 
-            app = self.app_loader.load_app(app_name)
-            if not app:
-                raise HTTPException(status_code=404, detail=f"App '{app_name}' not found for tool '{tool_name}'")
+            if not target_app:
+                raise HTTPException(status_code=404, detail=f"App not found for tool '{tool_name}'")
 
-            runtime = AppRuntime(app)
+            runtime = AppRuntime(target_app)
             result = await runtime.execute_action(action_name, arguments)
 
             if not result.get("success"):
@@ -185,3 +202,7 @@ def create_mcp_server() -> FastAPI:
     """Create and return MCP server instance."""
     exposer = MCPExposer()
     return exposer.get_app()
+
+
+# Expose app for uvicorn
+app = create_mcp_server()

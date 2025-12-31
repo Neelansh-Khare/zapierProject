@@ -32,12 +32,14 @@ class AppLoader:
             return self._app_cache[app_name]
 
         apps_in_registry = self.registry_manager.get_apps()
-        app_info = next((app for app in apps_in_registry if app["name"] == app_name), None)
+        app_info = next((app for app in apps_in_registry if app.get("metadata", {}).get("name") == app_name), None)
 
         if not app_info:
             return None
 
-        app_def_path = self.base_dir / app_info["path"] / "definition.json"
+        # Determine path - registry doesn't store path directly, construct it
+        app_def_path = self.base_dir / "apps" / app_name.lower().replace(" ", "_") / "definition.json"
+        
         if not app_def_path.exists():
             print(f"Warning: App definition file not found for {app_name} at {app_def_path}")
             return None
@@ -55,9 +57,11 @@ class AppLoader:
         all_apps = []
         apps_in_registry = self.registry_manager.get_apps()
         for app_info in apps_in_registry:
-            app = self.load_app(app_info["name"])
-            if app:
-                all_apps.append(app)
+            name = app_info.get("metadata", {}).get("name")
+            if name:
+                app = self.load_app(name)
+                if app:
+                    all_apps.append(app)
         return all_apps
 
 # Global AppLoader instance

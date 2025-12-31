@@ -54,3 +54,5 @@ htmlcov/
 *.sqlite
 state_data/
 
+PROJECT_STATE.md
+nextSteps.md
